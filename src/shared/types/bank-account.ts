@@ -1,6 +1,6 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { BankAccount } from '../../../dist/interfaces/bank-account';
 import { EBankAccoutType } from '../../bank-accounts-factory/types/accounts-type-enum';
+import { BankAccount } from '../interfaces/bank-account';
 import { Base } from '../schema/base';
 @InputType('BankAccountType')
 @ObjectType()

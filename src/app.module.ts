@@ -14,6 +14,7 @@ import { UserBankSettingsModule } from './user-bank-settings/user-bank-settings.
 import { CheckingAccountModule } from './checking-account/checking-account.module';
 import { SavingsAccountModule } from './savings-account/savings-account.module';
 import { BankAccountsFactoryModule } from './bank-accounts-factory/bank-accounts-factory.module';
+import { BankAccountGetterModule } from './bank-account-getter/bank-account-getter.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { BankAccountsFactoryModule } from './bank-accounts-factory/bank-accounts
     CheckingAccountModule,
     SavingsAccountModule,
     BankAccountsFactoryModule,
+    BankAccountGetterModule,
   ],
   controllers: [AppController],
   providers: [AppService],

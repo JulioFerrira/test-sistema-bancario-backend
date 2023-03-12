@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { BankSettingsResolver } from './bank-settings.resolver';
 import { BankSettingsService } from './bank-settings.service';
 import { BankSetting, BankSettingSchema } from './schema/bank-setting.schema';
 
@@ -9,7 +10,7 @@ import { BankSetting, BankSettingSchema } from './schema/bank-setting.schema';
       { name: BankSetting.name, schema: BankSettingSchema },
     ]),
   ],
-  providers: [BankSettingsService],
+  providers: [BankSettingsService, BankSettingsResolver],
   exports: [BankSettingsService],
 })
 export class BankSettingsModule {}

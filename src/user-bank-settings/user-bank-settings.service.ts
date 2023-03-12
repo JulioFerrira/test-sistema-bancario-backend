@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { BankAccount } from 'src/shared/interfaces/bank-account';
 import { uuid } from 'uuidv4';
 import { BankAccountsFactoryService } from '../bank-accounts-factory/bank-accounts-factory.service';
-import { EBankAccoutType } from '../bank-accounts-factory/types/accounts-type-enum';
 import { BankSettingsService } from '../bank-settings/bank-settings.service';
 import { CheckingAccountService } from '../checking-account/checking-account.service';
 import { SavingsAccountService } from '../savings-account/savings-account.service';
@@ -24,7 +22,9 @@ export class UserBankSettingsService {
     private readonly userBankSettingsModel: Model<UserBankSetting>,
   ) {}
 
-  async create(createUserBankSettingInput: CreateUserBankSettingInput) {
+  async create(
+    createUserBankSettingInput: CreateUserBankSettingInput,
+  ): Promise<UserBankSetting> {
     const { bankSettingInput, createBankAccountsFactoryInput, userInput } =
       createUserBankSettingInput;
 
@@ -49,20 +49,25 @@ export class UserBankSettingsService {
     return userBankSetting;
   }
 
-  async findBankAccountByType(
-    bankAccountType: EBankAccoutType,
-    bankAccount: string,
-  ): Promise<BankAccount> {
-    if (bankAccountType === EBankAccoutType.SAVINGS) {
-      return this.savingsAccountService.findOneById(bankAccount);
+  async findOneById(id: string): Promise<UserBankSetting> {
+    const storedUserBankSettings = await this.userBankSettingsModel.findOne({
+      id,
+    });
+    if (!storedUserBankSettings) {
+      throw new Error('User bank settings not found');
     }
-    if (bankAccountType === EBankAccoutType.CHECKING) {
-      return this.checkingAccountService.findOneById(bankAccount);
-    }
+    return storedUserBankSettings;
   }
 
-  async findOneById(id: number) {
-    return `This action returns a #${id} userBankSetting`;
+  //For JWT identification
+  async findOneByUserId(userId: string): Promise<UserBankSetting> {
+    const storedUserBankSettings = await this.userBankSettingsModel.findOne({
+      user: userId,
+    });
+    if (!storedUserBankSettings) {
+      throw new Error('User bank settings not found');
+    }
+    return storedUserBankSettings;
   }
 
   // findAll() {

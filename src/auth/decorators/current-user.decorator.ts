@@ -4,12 +4,12 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { User } from '../../user/schema/user.schema';
+import { UserBankSetting } from '../../user-bank-settings/schema/user-bank-setting.schema';
 
 export const CurrentUser = createParamDecorator(
-  (data: unknown, context: ExecutionContext): User => {
+  (data: unknown, context: ExecutionContext): UserBankSetting => {
     const ctx = GqlExecutionContext.create(context);
-    const user: User = ctx.getContext().req.user;
+    const user: UserBankSetting = ctx.getContext().req.user;
     if (!user) {
       throw new InternalServerErrorException(`No user inside the request`);
     }

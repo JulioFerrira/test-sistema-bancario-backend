@@ -5,6 +5,7 @@ import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
+import { UserBankSettingsModule } from '../user-bank-settings/user-bank-settings.module';
 import { UserModule } from '../user/user.module';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
@@ -27,7 +28,7 @@ import { AuthService } from './auth.service';
         },
       }),
     }),
-
+    UserBankSettingsModule,
     UserModule,
   ],
 })

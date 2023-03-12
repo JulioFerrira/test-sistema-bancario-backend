@@ -1,13 +1,10 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import * as bcrypt from 'bcrypt';
 
-import { User } from '../user/schema/user.schema';
+import { UserBankSetting } from '../user-bank-settings/schema/user-bank-setting.schema';
+import { UserBankSettingsService } from '../user-bank-settings/user-bank-settings.service';
 import { UserService } from '../user/user.service';
 import { LoginInput } from './dto/inputs';
 import { AuthResponse } from './types/auth-response.types';
@@ -16,6 +13,7 @@ import { AuthResponse } from './types/auth-response.types';
 export class AuthService {
   constructor(
     private readonly usersService: UserService,
+    private readonly userBankSettingsService: UserBankSettingsService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -31,20 +29,19 @@ export class AuthService {
       throw new BadRequestException('Email / Password do not match');
     }
 
-    const token = this.getJwtToken(user.id);
+    const userBankSettings = await this.userBankSettingsService.findOneByUserId(
+      user.id,
+    );
+
+    const token = this.getJwtToken(userBankSettings.id);
 
     return {
       token,
     };
   }
 
-  async validateUser(id: string): Promise<User> {
-    const user = await this.usersService.findOneById(id);
-
-    if (!user.isActive) throw new UnauthorizedException(`User is inactive`);
-
-    delete user.password;
-
+  async validateUser(id: string): Promise<UserBankSetting> {
+    const user = await this.userBankSettingsService.findOneById(id);
     return user;
   }
 }

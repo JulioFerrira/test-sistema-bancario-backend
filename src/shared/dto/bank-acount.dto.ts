@@ -1,3 +1,3 @@
-export interface BankAccountDto {
+export interface BankAccountInput {
   balance: number;
 }

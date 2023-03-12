@@ -1,5 +1,5 @@
-import { BankAccountDto } from 'src/interfaces/bank-account.dto';
+import { BankAccountInput } from 'src/shared/dto/bank-acount.dto';
 
-export class CreateSavingsAccountDto implements BankAccountDto {
+export class CreateSavingsAccountDto implements BankAccountInput {
   balance: number;
 }

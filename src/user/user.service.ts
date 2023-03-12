@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
 import { uuid } from 'uuidv4';
 import { CreateUserInput } from './dto/create-user.input';
+import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './schema/user.schema';
 
 @Injectable()
@@ -29,6 +30,15 @@ export class UserService {
       updatedAt: new Date(),
     });
     return user;
+  }
+
+  async updateUser(updateUserInput: UpdateUserInput) {
+    await this.findOneById(updateUserInput.id);
+    const updatedUser = await this.userModel.findOneAndUpdate(
+      { id: updateUserInput.id },
+      updateUserInput,
+    );
+    return updatedUser;
   }
 
   async findOneById(id: string): Promise<User> {

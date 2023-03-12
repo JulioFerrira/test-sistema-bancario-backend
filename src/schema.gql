@@ -2,6 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type BankAccountAC {
+  id: String!
+  updatedAt: DateTime
+  createdAt: DateTime
+  balance: Float!
+  accountNumber: String!
+  typeAccount: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type User implements Base {
   id: String!
   updatedAt: DateTime
@@ -16,24 +30,6 @@ interface Base {
   id: String!
   updatedAt: DateTime
   createdAt: DateTime
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type AuthResponse {
-  token: String!
-}
-
-type BankAccountAC {
-  id: String!
-  updatedAt: DateTime
-  createdAt: DateTime
-  balance: Float!
-  accountNumber: String!
-  typeAccount: String!
 }
 
 type UserBankSetting implements Base {
@@ -61,17 +57,21 @@ type BankSetting implements Base {
   contacts: [UserBankSetting!]!
 }
 
-input UserType {
-  name: String!
-  email: String!
-  password: String!
-  isActive: Boolean!
+type AuthResponse {
+  token: String!
 }
 
 input BankAccountType {
   balance: Float!
   accountNumber: String!
   typeAccount: String!
+}
+
+input UserType {
+  name: String!
+  email: String!
+  password: String!
+  isActive: Boolean!
 }
 
 input UserBankSettingType {
@@ -88,22 +88,31 @@ input BankSettingType {
 }
 
 type Query {
-  user(id: String!): User!
+  findOneUserById(id: String!): User!
+  findOneUserBankSetting(id: String!): UserBankSetting!
+  userBankSetting: UserBankSetting!
+  findOneBankSettings(id: String!): BankSetting!
+  findAllBankAccount: [BankAccountAC!]!
+  findOneBankAccount(getBankAccountGetterInput: GetBankAccountGetterInput!): BankAccountAC!
+}
 
-  """Test guard"""
-  testGuard: User!
+input GetBankAccountGetterInput {
+  id: String!
+  accountType: EBankAccoutType!
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInputType!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
   login(loginInput: LoginInput!): AuthResponse!
   createUserBankSettings(createUserBankSettingDto: CreateUserBankSettingInputType!): UserBankSetting!
+  updateBankSetting(updateBankSettingInput: UpdateBankSettingInput!): BankSetting!
 }
 
-input CreateUserInputType {
-  name: String!
-  email: String!
-  password: String!
+input UpdateUserInput {
+  name: String
+  email: String
+  password: String
+  id: String!
 }
 
 input LoginInput {
@@ -117,6 +126,12 @@ input CreateUserBankSettingInputType {
   createBankAccountsFactoryInput: CreateBankAccountsFactoryInputType!
 }
 
+input CreateUserInputType {
+  name: String!
+  email: String!
+  password: String!
+}
+
 input CreateBankSettingInputType {
   transferencePassword: String!
   bankName: String!
@@ -126,4 +141,11 @@ input CreateBankSettingInputType {
 input CreateBankAccountsFactoryInputType {
   balance: Float!
   accountType: EBankAccoutType!
+}
+
+input UpdateBankSettingInput {
+  transferencePassword: String
+  bankName: String
+  contact: [String!]
+  id: String!
 }

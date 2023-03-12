@@ -1,8 +1,10 @@
+import { Field, InputType, PartialType } from '@nestjs/graphql';
 import { CreateBankSettingInput } from './create-bank-setting.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 
 @InputType()
-export class UpdateBankSettingInput extends PartialType(CreateBankSettingInput) {
-  @Field(() => Int)
-  id: number;
+export class UpdateBankSettingInput extends PartialType(
+  CreateBankSettingInput,
+) {
+  @Field(() => String)
+  id: string;
 }
