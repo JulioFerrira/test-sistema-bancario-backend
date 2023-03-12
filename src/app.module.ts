@@ -9,6 +9,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { BankSettingsModule } from './bank-settings/bank-settings.module';
+import { UserBankSettingsModule } from './user-bank-settings/user-bank-settings.module';
+import { CheckingAccountModule } from './checking-account/checking-account.module';
+import { SavingsAccountModule } from './savings-account/savings-account.module';
+import { BankAccountsFactoryModule } from './bank-accounts-factory/bank-accounts-factory.module';
 
 @Module({
   imports: [
@@ -24,6 +29,11 @@ import { UserModule } from './user/user.module';
     }),
     UserModule,
     AuthModule,
+    BankSettingsModule,
+    UserBankSettingsModule,
+    CheckingAccountModule,
+    SavingsAccountModule,
+    BankAccountsFactoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

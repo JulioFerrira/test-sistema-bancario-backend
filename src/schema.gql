@@ -27,6 +27,16 @@ type AuthResponse {
   token: String!
 }
 
+type BankSetting implements Base {
+  id: String!
+  updatedAt: DateTime
+  createdAt: DateTime
+  transferencePassword: String!
+  accountNumber: String!
+  bankName: String!
+  contacts: [User!]!
+}
+
 input UserType {
   name: String!
   email: String!
@@ -34,16 +44,28 @@ input UserType {
   isActive: Boolean!
 }
 
+input BankSettingType {
+  transferencePassword: String!
+  accountNumber: String!
+  bankName: String!
+  contacts: [UserType!]!
+}
+
 type Query {
   user(id: String!): User!
 
   """Test guard"""
   testGuard: User!
+  bankSettings: [BankSetting!]!
+  bankSetting(id: Int!): BankSetting!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   login(loginInput: LoginInput!): AuthResponse!
+  createBankSetting(createBankSettingInput: CreateBankSettingInput!): BankSetting!
+  updateBankSetting(updateBankSettingInput: UpdateBankSettingInput!): BankSetting!
+  removeBankSetting(id: Int!): BankSetting!
 }
 
 input CreateUserInput {
@@ -55,4 +77,15 @@ input CreateUserInput {
 input LoginInput {
   email: String!
   password: String!
+}
+
+input CreateBankSettingInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateBankSettingInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
