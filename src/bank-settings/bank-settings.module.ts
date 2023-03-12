@@ -1,8 +1,15 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { BankSettingsService } from './bank-settings.service';
-import { BankSettingsResolver } from './bank-settings.resolver';
+import { BankSetting, BankSettingSchema } from './schema/bank-setting.schema';
 
 @Module({
-  providers: [BankSettingsResolver, BankSettingsService]
+  imports: [
+    MongooseModule.forFeature([
+      { name: BankSetting.name, schema: BankSettingSchema },
+    ]),
+  ],
+  providers: [BankSettingsService],
+  exports: [BankSettingsService],
 })
 export class BankSettingsModule {}

@@ -18,12 +18,21 @@ export class CheckingAccountService {
   ): Promise<CheckingAccount> {
     const { balance } = createCheckingAccountDto;
     const bankAccountNumber = generateBankAccountNumber();
-    return await this.checkingAccountModel.create({
+    const checkingAccount = await this.checkingAccountModel.create({
       balance,
       id: uuid(),
       createdAt: new Date(),
       updatedAt: new Date(),
       accountNumber: bankAccountNumber,
     });
+    return checkingAccount;
+  }
+
+  async findOneById(id: string): Promise<CheckingAccount> {
+    const storedCheckingAccount = await this.checkingAccountModel.findOne({
+      id,
+    });
+    if (!storedCheckingAccount) throw new Error('Checking account not found');
+    return storedCheckingAccount;
   }
 }

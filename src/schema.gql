@@ -27,14 +27,27 @@ type AuthResponse {
   token: String!
 }
 
+type BankAccountAC {
+  balance: Float!
+  accountNumber: String!
+}
+
+type UserBankSetting implements Base {
+  id: String!
+  updatedAt: DateTime
+  createdAt: DateTime
+  user: User!
+  bankSetting: BankSetting!
+  bankAccount: BankAccountAC!
+}
+
 type BankSetting implements Base {
   id: String!
   updatedAt: DateTime
   createdAt: DateTime
   transferencePassword: String!
-  accountNumber: String!
   bankName: String!
-  contacts: [User!]!
+  contacts: [UserBankSetting!]!
 }
 
 input UserType {
@@ -44,11 +57,21 @@ input UserType {
   isActive: Boolean!
 }
 
+input BankAccountType {
+  balance: Float!
+  accountNumber: String!
+}
+
+input UserBankSettingType {
+  user: UserType!
+  bankSetting: BankSettingType!
+  bankAccount: BankAccountType!
+}
+
 input BankSettingType {
   transferencePassword: String!
-  accountNumber: String!
   bankName: String!
-  contacts: [UserType!]!
+  contacts: [UserBankSettingType!]!
 }
 
 type Query {
@@ -56,19 +79,15 @@ type Query {
 
   """Test guard"""
   testGuard: User!
-  bankSettings: [BankSetting!]!
-  bankSetting(id: Int!): BankSetting!
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
+  createUser(createUserInput: CreateUserInputType!): User!
   login(loginInput: LoginInput!): AuthResponse!
-  createBankSetting(createBankSettingInput: CreateBankSettingInput!): BankSetting!
-  updateBankSetting(updateBankSettingInput: UpdateBankSettingInput!): BankSetting!
-  removeBankSetting(id: Int!): BankSetting!
+  createUserBankSettings(createUserBankSettingDto: CreateUserBankSettingInputType!): UserBankSetting!
 }
 
-input CreateUserInput {
+input CreateUserInputType {
   name: String!
   email: String!
   password: String!
@@ -79,13 +98,25 @@ input LoginInput {
   password: String!
 }
 
-input CreateBankSettingInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+input CreateUserBankSettingInputType {
+  userInput: CreateUserInputType!
+  bankSettingInput: CreateBankSettingInputType!
+  createBankAccountsFactoryInput: CreateBankAccountsFactoryInputType!
 }
 
-input UpdateBankSettingInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+input CreateBankSettingInputType {
+  transferencePassword: String!
+  bankName: String!
+  contact: [String!]
+}
+
+input CreateBankAccountsFactoryInputType {
+  balance: Float!
+  accountType: EBankAccoutType!
+}
+
+"""Bank account type"""
+enum EBankAccoutType {
+  SAVINGS
+  CHECKING
 }

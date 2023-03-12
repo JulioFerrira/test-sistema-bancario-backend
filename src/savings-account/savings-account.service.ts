@@ -17,12 +17,21 @@ export class SavingsAccountService {
   ): Promise<SavingsAccount> {
     const { balance } = createSavingsAccountDto;
     const bankAccountNumber = generateBankAccountNumber();
-    return await this.savingsAccountModel.create({
+    const savingsAccount = await this.savingsAccountModel.create({
       balance,
       id: uuid(),
       createdAt: new Date(),
       updatedAt: new Date(),
       accountNumber: bankAccountNumber,
     });
+    return savingsAccount;
+  }
+
+  async findOneById(id: string): Promise<SavingsAccount> {
+    const storedSavingsAccount = await this.savingsAccountModel.findOne({
+      id,
+    });
+    if (!storedSavingsAccount) throw new Error('Savings account not found');
+    return storedSavingsAccount;
   }
 }

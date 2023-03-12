@@ -11,19 +11,17 @@ export class BankAccountsFactoryService {
     private readonly savingsAccountService: SavingsAccountService,
   ) {}
 
-  async createBankAccount(
-    createBankAccountsFactoryInput: CreateBankAccountsFactoryInput,
-  ) {
+  async create(createBankAccountsFactoryInput: CreateBankAccountsFactoryInput) {
     const { accountType, balance } = createBankAccountsFactoryInput;
-    const createBankAccount = {
-      [EBankAccoutType.CHECKING]: await this.checkingAccountService.create({
-        balance,
-      }),
-      [EBankAccoutType.SAVINGS]: await this.savingsAccountService.create({
-        balance,
-      }),
-      default: null,
-    };
-    return createBankAccount[accountType] || createBankAccount.default;
+    switch (accountType) {
+      case EBankAccoutType.CHECKING:
+        return await this.checkingAccountService.create({ balance });
+
+      case EBankAccoutType.SAVINGS:
+        return await this.savingsAccountService.create({ balance });
+
+      default:
+        throw new Error('Invalid account type');
+    }
   }
 }

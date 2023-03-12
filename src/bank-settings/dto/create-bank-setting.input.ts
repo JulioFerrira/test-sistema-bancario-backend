@@ -1,7 +1,13 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 
-@InputType()
+@InputType('CreateBankSettingInputType')
 export class CreateBankSettingInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field(() => String)
+  transferencePassword: string;
+
+  @Field(() => String)
+  bankName: string;
+
+  @Field(() => [String], { nullable: true })
+  contact: string[];
 }

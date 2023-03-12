@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import * as bcrypt from 'bcrypt';
+import { Model } from 'mongoose';
+import { uuid } from 'uuidv4';
 import { CreateBankSettingInput } from './dto/create-bank-setting.input';
-import { UpdateBankSettingInput } from './dto/update-bank-setting.input';
+import { BankSetting } from './schema/bank-setting.schema';
 
 @Injectable()
 export class BankSettingsService {
-  create(createBankSettingInput: CreateBankSettingInput) {
-    return 'This action adds a new bankSetting';
+  constructor(
+    @InjectModel(BankSetting.name)
+    private readonly bankSettingsModel: Model<BankSetting>,
+  ) {}
+
+  async create(createBankSettingInput: CreateBankSettingInput) {
+    const { transferencePassword } = createBankSettingInput;
+    const bankSettings = await this.bankSettingsModel.create({
+      ...createBankSettingInput,
+      transferencePassword: await bcrypt.hash(transferencePassword, 11),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      id: uuid(),
+    });
+    return bankSettings;
   }
 
-  findAll() {
-    return `This action returns all bankSettings`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} bankSetting`;
-  }
-
-  update(id: number, updateBankSettingInput: UpdateBankSettingInput) {
-    return `This action updates a #${id} bankSetting`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} bankSetting`;
+  async findOneById(id: number) {
+    const storedBankSettigs = await this.bankSettingsModel.findOne({ id });
+    if (!storedBankSettigs) throw new Error('Bank settings not found');
+    return storedBankSettigs;
   }
 }
