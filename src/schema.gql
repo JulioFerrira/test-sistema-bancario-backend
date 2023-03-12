@@ -28,8 +28,12 @@ type AuthResponse {
 }
 
 type BankAccountAC {
+  id: String!
+  updatedAt: DateTime
+  createdAt: DateTime
   balance: Float!
   accountNumber: String!
+  typeAccount: String!
 }
 
 type UserBankSetting implements Base {
@@ -39,6 +43,13 @@ type UserBankSetting implements Base {
   user: User!
   bankSetting: BankSetting!
   bankAccount: BankAccountAC!
+  bankAccountType: EBankAccoutType!
+}
+
+"""Bank account type"""
+enum EBankAccoutType {
+  SAVINGS
+  CHECKING
 }
 
 type BankSetting implements Base {
@@ -60,12 +71,14 @@ input UserType {
 input BankAccountType {
   balance: Float!
   accountNumber: String!
+  typeAccount: String!
 }
 
 input UserBankSettingType {
   user: UserType!
   bankSetting: BankSettingType!
   bankAccount: BankAccountType!
+  bankAccountType: EBankAccoutType!
 }
 
 input BankSettingType {
@@ -113,10 +126,4 @@ input CreateBankSettingInputType {
 input CreateBankAccountsFactoryInputType {
   balance: Float!
   accountType: EBankAccoutType!
-}
-
-"""Bank account type"""
-enum EBankAccoutType {
-  SAVINGS
-  CHECKING
 }

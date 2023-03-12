@@ -25,7 +25,7 @@ export class BankSettingsService {
     return bankSettings;
   }
 
-  async findOneById(id: number) {
+  async findOneById(id: string) {
     const storedBankSettigs = await this.bankSettingsModel.findOne({ id });
     if (!storedBankSettigs) throw new Error('Bank settings not found');
     return storedBankSettigs;

@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { BankAccount } from 'src/shared/interfaces/bank-account';
 import { uuid } from 'uuidv4';
 import { BankAccountsFactoryService } from '../bank-accounts-factory/bank-accounts-factory.service';
+import { EBankAccoutType } from '../bank-accounts-factory/types/accounts-type-enum';
 import { BankSettingsService } from '../bank-settings/bank-settings.service';
+import { CheckingAccountService } from '../checking-account/checking-account.service';
+import { SavingsAccountService } from '../savings-account/savings-account.service';
 import { UserService } from '../user/user.service';
 import { CreateUserBankSettingInput } from './dto/create-user-bank-setting.dto';
 import { UserBankSetting } from './schema/user-bank-setting.schema';
@@ -14,6 +18,8 @@ export class UserBankSettingsService {
     private readonly bankAccountsFactoryService: BankAccountsFactoryService,
     private readonly bankSettingsService: BankSettingsService,
     private readonly userService: UserService,
+    private readonly savingsAccountService: SavingsAccountService,
+    private readonly checkingAccountService: CheckingAccountService,
     @InjectModel(UserBankSetting.name)
     private readonly userBankSettingsModel: Model<UserBankSetting>,
   ) {}
@@ -38,8 +44,21 @@ export class UserBankSettingsService {
       id: uuid(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      bankAccountType: createBankAccountsFactoryInput.accountType,
     });
     return userBankSetting;
+  }
+
+  async findBankAccountByType(
+    bankAccountType: EBankAccoutType,
+    bankAccount: string,
+  ): Promise<BankAccount> {
+    if (bankAccountType === EBankAccoutType.SAVINGS) {
+      return this.savingsAccountService.findOneById(bankAccount);
+    }
+    if (bankAccountType === EBankAccoutType.CHECKING) {
+      return this.checkingAccountService.findOneById(bankAccount);
+    }
   }
 
   async findOneById(id: number) {
