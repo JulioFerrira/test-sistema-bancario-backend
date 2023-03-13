@@ -9,11 +9,6 @@ export class BankAccountGetterResolver {
     private readonly bankAccountGetterService: BankAccountGetterService,
   ) {}
 
-  @Query(() => [BankAccountAC])
-  findAllBankAccount() {
-    return this.bankAccountGetterService.findAll();
-  }
-
   @Query(() => BankAccountAC)
   findOneBankAccount(
     @Args('getBankAccountGetterInput')

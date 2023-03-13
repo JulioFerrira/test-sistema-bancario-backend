@@ -92,7 +92,6 @@ type Query {
   findOneUserBankSetting(id: String!): UserBankSetting!
   userBankSetting: UserBankSetting!
   findOneBankSettings(id: String!): BankSetting!
-  findAllBankAccount: [BankAccountAC!]!
   findOneBankAccount(getBankAccountGetterInput: GetBankAccountGetterInput!): BankAccountAC!
 }
 
