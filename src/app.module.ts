@@ -8,13 +8,13 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
+import { BankAccountModule } from './bank-account/bank-account.module';
+import { BankAccountsFactoryModule } from './bank-accounts-factory/bank-accounts-factory.module';
 import { BankSettingsModule } from './bank-settings/bank-settings.module';
-import { UserBankSettingsModule } from './user-bank-settings/user-bank-settings.module';
 import { CheckingAccountModule } from './checking-account/checking-account.module';
 import { SavingsAccountModule } from './savings-account/savings-account.module';
-import { BankAccountsFactoryModule } from './bank-accounts-factory/bank-accounts-factory.module';
-import { BankAccountGetterModule } from './bank-account-getter/bank-account-getter.module';
+import { UserBankSettingsModule } from './user-bank-settings/user-bank-settings.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -35,7 +35,7 @@ import { BankAccountGetterModule } from './bank-account-getter/bank-account-gett
     CheckingAccountModule,
     SavingsAccountModule,
     BankAccountsFactoryModule,
-    BankAccountGetterModule,
+    BankAccountModule,
   ],
   controllers: [AppController],
   providers: [AppService],

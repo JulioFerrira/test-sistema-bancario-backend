@@ -7,12 +7,12 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
+import { BankAccountService } from 'src/bank-account/bank-account.service';
+import { BankAccount } from 'src/bank-account/schema/bank-account.schema';
 import { BankSetting } from 'src/bank-settings/schema/bank-setting.schema';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { BankAccountGetterService } from '../bank-account-getter/bank-account-getter.service';
 import { BankSettingsService } from '../bank-settings/bank-settings.service';
-import { BankAccountAC } from '../shared/types/bank-account';
 import { User } from '../user/schema/user.schema';
 import { UserService } from '../user/user.service';
 import { CreateUserBankSettingInput } from './dto/create-user-bank-setting.dto';
@@ -23,7 +23,7 @@ import { UserBankSettingsService } from './user-bank-settings.service';
 export class UserBankSettingsResolver {
   constructor(
     private readonly userBankSettingsService: UserBankSettingsService,
-    private readonly bankAccountGetterService: BankAccountGetterService,
+    private readonly BankAccountService: BankAccountService,
     private readonly bankSettingsService: BankSettingsService,
     private readonly userService: UserService,
   ) {}
@@ -66,9 +66,9 @@ export class UserBankSettingsResolver {
   @ResolveField()
   async bankAccount(
     @Parent() userBankSetting: UserBankSetting,
-  ): Promise<BankAccountAC> {
+  ): Promise<BankAccount> {
     const { bankAccountType } = userBankSetting;
-    return this.bankAccountGetterService.findOneBankAccount({
+    return this.BankAccountService.findOneBankAccount({
       accountType: bankAccountType,
       id: userBankSetting.bankAccount,
     });

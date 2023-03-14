@@ -2,19 +2,61 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type BankAccountAC {
+interface BankAccount {
   id: String!
   updatedAt: DateTime
   createdAt: DateTime
-  balance: Float!
+  balance: Int!
   accountNumber: String!
-  typeAccount: String!
+  typeAccount: EBankAccoutType!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+"""Bank account type"""
+enum EBankAccoutType {
+  SAVINGS
+  CHECKING
+  UNKNOWN
+}
+
+type BankAccountObject implements Base {
+  id: String!
+  updatedAt: DateTime
+  createdAt: DateTime
+  balance: Int!
+  accountNumber: String!
+  typeAccount: EBankAccoutType!
+}
+
+interface Base {
+  id: String!
+  updatedAt: DateTime
+  createdAt: DateTime
+}
+
+type CheckingAccount implements BankAccount & Base {
+  id: String!
+  updatedAt: DateTime
+  createdAt: DateTime
+  balance: Int!
+  accountNumber: String!
+  typeAccount: EBankAccoutType!
+  transferenceCost: Int
+}
+
+type SavingsAccount implements BankAccount & Base {
+  id: String!
+  updatedAt: DateTime
+  createdAt: DateTime
+  balance: Int!
+  accountNumber: String!
+  typeAccount: EBankAccoutType!
+  interestRate: Float!
+}
 
 type User implements Base {
   id: String!
@@ -26,26 +68,14 @@ type User implements Base {
   isActive: Boolean!
 }
 
-interface Base {
-  id: String!
-  updatedAt: DateTime
-  createdAt: DateTime
-}
-
 type UserBankSetting implements Base {
   id: String!
   updatedAt: DateTime
   createdAt: DateTime
   user: User!
   bankSetting: BankSetting!
-  bankAccount: BankAccountAC!
+  bankAccount: BankAccount!
   bankAccountType: EBankAccoutType!
-}
-
-"""Bank account type"""
-enum EBankAccoutType {
-  SAVINGS
-  CHECKING
 }
 
 type BankSetting implements Base {
@@ -62,9 +92,9 @@ type AuthResponse {
 }
 
 input BankAccountType {
-  balance: Float!
+  balance: Int!
   accountNumber: String!
-  typeAccount: String!
+  typeAccount: EBankAccoutType!
 }
 
 input UserType {
@@ -89,15 +119,24 @@ input BankSettingType {
 
 type Query {
   findOneUserById(id: String!): User!
+  revalidate: AuthResponse!
   findOneUserBankSetting(id: String!): UserBankSetting!
   userBankSetting: UserBankSetting!
   findOneBankSettings(id: String!): BankSetting!
-  findOneBankAccount(getBankAccountGetterInput: GetBankAccountGetterInput!): BankAccountAC!
+  findOneBankAccount(getBankAccountGetterInput: GetBankAccountInput!): BankAccount!
+  transferBalance(transferBalanceInput: TransferBalanceInput!): Boolean!
 }
 
-input GetBankAccountGetterInput {
+input GetBankAccountInput {
   id: String!
   accountType: EBankAccoutType!
+}
+
+input TransferBalanceInput {
+  accountTypeTo: EBankAccoutType!
+  accountNumberTo: String!
+  emailTo: EBankAccoutType!
+  amount: Int!
 }
 
 type Mutation {
@@ -140,6 +179,8 @@ input CreateBankSettingInputType {
 input CreateBankAccountsFactoryInputType {
   balance: Float!
   accountType: EBankAccoutType!
+  interestRate: Float
+  moneyOutcomes: Float
 }
 
 input UpdateBankSettingInput {

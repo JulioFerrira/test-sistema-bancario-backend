@@ -15,10 +15,9 @@ export class SavingsAccountService {
   async create(
     createSavingsAccountDto: CreateSavingsAccountDto,
   ): Promise<SavingsAccount> {
-    const { balance } = createSavingsAccountDto;
     const bankAccountNumber = generateBankAccountNumber();
     const savingsAccount = await this.savingsAccountModel.create({
-      balance,
+      ...createSavingsAccountDto,
       id: uuid(),
       createdAt: new Date(),
       updatedAt: new Date(),

@@ -1,24 +1,19 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BankAccount } from 'src/shared/interfaces/bank-account';
+import { BankAccount } from '../../bank-account/schema/bank-account.schema';
 import { EBankAccoutType } from '../../bank-accounts-factory/types/accounts-type-enum';
-import { Base } from '../../shared/schema/base';
 
-@ObjectType({ implements: [Base] })
 @Schema()
+@ObjectType({ implements: [BankAccount] })
 @InputType('CheckingAccountType')
-export class CheckingAccount extends Base implements BankAccount {
-  @Field(() => String)
-  @Prop()
-  balance: number;
-
-  @Field(() => String)
-  @Prop()
-  accountNumber: string;
-
+export class CheckingAccount extends BankAccount {
   @Field(() => EBankAccoutType)
   @Prop({ default: EBankAccoutType.CHECKING })
   typeAccount: EBankAccoutType.CHECKING;
+
+  @Field(() => Int, { nullable: true })
+  @Prop()
+  transferenceCost: number;
 }
 
 export const CheckingAccountSchema =

@@ -4,7 +4,7 @@ import { CheckingAccountService } from './checking-account.service';
 import {
   CheckingAccount,
   CheckingAccountSchema,
-} from './schema/checking-account.entity';
+} from './schema/checking-account.schema';
 
 @Module({
   imports: [

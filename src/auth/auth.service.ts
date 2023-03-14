@@ -44,4 +44,10 @@ export class AuthService {
     const user = await this.userBankSettingsService.findOneById(id);
     return user;
   }
+
+  revalidateToken(userBankSettings: UserBankSetting): AuthResponse {
+    const token = this.getJwtToken(userBankSettings.id);
+
+    return { token };
+  }
 }

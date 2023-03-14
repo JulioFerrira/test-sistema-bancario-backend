@@ -1,9 +1,9 @@
 import { Field, InputType, PartialType } from '@nestjs/graphql';
-import { GetBankAccountGetterInput } from './get-account.input';
+import { GetBankAccountInput } from './get-account.input';
 
 @InputType()
 export class UpdateBankAccountGetterInput extends PartialType(
-  GetBankAccountGetterInput,
+  GetBankAccountInput,
 ) {
   @Field(() => String)
   id: string;

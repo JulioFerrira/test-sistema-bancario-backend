@@ -1,6 +1,6 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BankAccountAC } from 'src/shared/types/bank-account';
+import { BankAccount } from '../../bank-account/schema/bank-account.schema';
 import { EBankAccoutType } from '../../bank-accounts-factory/types/accounts-type-enum';
 import { BankSetting } from '../../bank-settings/schema/bank-setting.schema';
 import { Base } from '../../shared/schema/base';
@@ -18,7 +18,7 @@ export class UserBankSetting extends Base {
   @Prop()
   bankSetting: string;
 
-  @Field(() => BankAccountAC)
+  @Field(() => BankAccount)
   @Prop()
   bankAccount: string;
 

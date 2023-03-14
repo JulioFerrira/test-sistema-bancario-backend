@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { BankAccountGetterModule } from '../bank-account-getter/bank-account-getter.module';
+import { BankAccountModule } from 'src/bank-account/bank-account.module';
 import { BankAccountsFactoryModule } from '../bank-accounts-factory/bank-accounts-factory.module';
 import { BankSettingsModule } from '../bank-settings/bank-settings.module';
 import { UserModule } from '../user/user.module';
@@ -19,7 +19,7 @@ import { UserBankSettingsService } from './user-bank-settings.service';
     BankAccountsFactoryModule,
     UserModule,
     BankSettingsModule,
-    BankAccountGetterModule,
+    BankAccountModule,
   ],
   providers: [UserBankSettingsService, UserBankSettingsResolver],
   exports: [UserBankSettingsService],

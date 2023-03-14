@@ -4,8 +4,6 @@ import { Model } from 'mongoose';
 import { uuid } from 'uuidv4';
 import { BankAccountsFactoryService } from '../bank-accounts-factory/bank-accounts-factory.service';
 import { BankSettingsService } from '../bank-settings/bank-settings.service';
-import { CheckingAccountService } from '../checking-account/checking-account.service';
-import { SavingsAccountService } from '../savings-account/savings-account.service';
 import { UserService } from '../user/user.service';
 import { CreateUserBankSettingInput } from './dto/create-user-bank-setting.dto';
 import { UserBankSetting } from './schema/user-bank-setting.schema';
@@ -16,8 +14,6 @@ export class UserBankSettingsService {
     private readonly bankAccountsFactoryService: BankAccountsFactoryService,
     private readonly bankSettingsService: BankSettingsService,
     private readonly userService: UserService,
-    private readonly savingsAccountService: SavingsAccountService,
-    private readonly checkingAccountService: CheckingAccountService,
     @InjectModel(UserBankSetting.name)
     private readonly userBankSettingsModel: Model<UserBankSetting>,
   ) {}

@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { uuid } from 'uuidv4';
+import { TransferBalanceInput } from '../bank-account/dto/transfer-balance-input';
 import { generateBankAccountNumber } from '../utils/generateBankNumer';
 import { CreateCheckingAccountDto } from './dto/create-checking-account.dto';
-import { CheckingAccount } from './schema/checking-account.entity';
+import { CheckingAccount } from './schema/checking-account.schema';
 
 @Injectable()
 export class CheckingAccountService {
@@ -16,10 +17,9 @@ export class CheckingAccountService {
   async create(
     createCheckingAccountDto: CreateCheckingAccountDto,
   ): Promise<CheckingAccount> {
-    const { balance } = createCheckingAccountDto;
     const bankAccountNumber = generateBankAccountNumber();
     const checkingAccount = await this.checkingAccountModel.create({
-      balance,
+      ...createCheckingAccountDto,
       id: uuid(),
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -34,5 +34,11 @@ export class CheckingAccountService {
     });
     if (!storedCheckingAccount) throw new Error('Checking account not found');
     return storedCheckingAccount;
+  }
+
+  async findOneForTranfer(transferBalanceInput: TransferBalanceInput) {
+    const storedCheckingAccount = await this.checkingAccountModel.findOne({
+      accountNumber: transferBalanceInput.accountNumberTo,
+    });
   }
 }

@@ -12,13 +12,17 @@ export class BankAccountsFactoryService {
   ) {}
 
   async create(createBankAccountsFactoryInput: CreateBankAccountsFactoryInput) {
-    const { accountType, balance } = createBankAccountsFactoryInput;
+    const { accountType } = createBankAccountsFactoryInput;
     switch (accountType) {
       case EBankAccoutType.CHECKING:
-        return await this.checkingAccountService.create({ balance });
+        return await this.checkingAccountService.create(
+          createBankAccountsFactoryInput,
+        );
 
       case EBankAccoutType.SAVINGS:
-        return await this.savingsAccountService.create({ balance });
+        return await this.savingsAccountService.create(
+          createBankAccountsFactoryInput,
+        );
 
       default:
         throw new Error('Invalid account type');
