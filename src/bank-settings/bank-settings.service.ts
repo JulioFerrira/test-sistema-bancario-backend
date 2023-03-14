@@ -40,4 +40,11 @@ export class BankSettingsService {
     if (!storedBankSettigs) throw new Error('Bank settings not found');
     return storedBankSettigs;
   }
+
+  async addContact(contactId: string, id: string) {
+    await this.bankSettingsModel.findOneAndUpdate(
+      { id },
+      { $push: { contacts: contactId } },
+    );
+  }
 }

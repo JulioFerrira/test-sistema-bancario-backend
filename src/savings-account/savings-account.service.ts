@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { uuid } from 'uuidv4';
+import { DepositBalanceInput } from '../bank-account/dto/deposit-balance.input';
+import { TransferBalanceContactInput } from '../bank-account/dto/transfer-balance-contact.input';
 import { TransferBalanceInput } from '../bank-account/dto/transfer-balance-input';
 import { generateBankAccountNumber } from '../utils/generateBankNumer';
 import { CreateSavingsAccountInput } from './dto/create-savings-account.input';
@@ -60,14 +62,27 @@ export class SavingsAccountService {
     return storedSavingsAccount;
   }
 
-  async findOneContactForTranfer(transferBalanceInput: TransferBalanceInput) {
-    const id = '';
-    const storedCheckingAccount = await this.savingsAccountModel.findOne({
-      id,
+  async findOneContactForTranfer(
+    transferBalanceContactInput: TransferBalanceContactInput,
+  ) {
+    const { accountIdTo } = transferBalanceContactInput;
+    const storedSavingsAccount = await this.savingsAccountModel.findOne({
+      id: accountIdTo,
     });
-    if (!storedCheckingAccount) throw new Error('Checking account not found');
-    storedCheckingAccount.balance += transferBalanceInput.amount;
-    storedCheckingAccount.save();
-    return storedCheckingAccount;
+    if (!storedSavingsAccount) throw new Error('Savings account not found');
+    storedSavingsAccount.balance += transferBalanceContactInput.amount;
+    storedSavingsAccount.save();
+    return storedSavingsAccount;
+  }
+
+  async findOneForDeposit(depositBalanceInput: DepositBalanceInput) {
+    const { accountIdTo, amount } = depositBalanceInput;
+    const storedSavingsAccount = await this.savingsAccountModel.findOne({
+      id: accountIdTo,
+    });
+    if (!storedSavingsAccount) throw new Error('Savings account not found');
+    storedSavingsAccount.balance += amount;
+    storedSavingsAccount.save();
+    return storedSavingsAccount;
   }
 }

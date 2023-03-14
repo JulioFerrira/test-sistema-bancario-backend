@@ -140,6 +140,8 @@ type Mutation {
   createUserBankSettings(createUserBankSettingDto: CreateUserBankSettingInputType!): UserBankSetting!
   updateBankSetting(updateBankSettingInput: UpdateBankSettingInput!): BankSetting!
   transferBalance(transferBalanceInput: TransferBalanceInput!): Boolean!
+  transferBalanceContact(transferBalanceContactInput: TransferBalanceContactInput!): Boolean!
+  depositBalance(depositBalanceInput: DepositBalanceInput!): Boolean!
 }
 
 input UpdateUserInput {
@@ -191,4 +193,19 @@ input TransferBalanceInput {
   bankNameTo: String!
   emailTo: String!
   amount: Int!
+  transferencePassword: String!
+}
+
+input TransferBalanceContactInput {
+  accountTypeTo: EBankAccoutType!
+  accountIdTo: String!
+  amount: Int!
+  transferencePassword: String!
+}
+
+input DepositBalanceInput {
+  accountTypeTo: EBankAccoutType!
+  accountIdTo: String!
+  amount: Int!
+  transferencePassword: String!
 }

@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { uuid } from 'uuidv4';
+import { DepositBalanceInput } from '../bank-account/dto/deposit-balance.input';
+import { TransferBalanceContactInput } from '../bank-account/dto/transfer-balance-contact.input';
 import { TransferBalanceInput } from '../bank-account/dto/transfer-balance-input';
 import { UpdateBankAccountInput } from '../bank-account/dto/update-bank-account.input';
 import { generateBankAccountNumber } from '../utils/generateBankNumer';
@@ -61,13 +63,26 @@ export class CheckingAccountService {
     return storedCheckingAccount;
   }
 
-  async findOneContactForTranfer(transferBalanceInput: TransferBalanceInput) {
-    const id = '';
+  async findOneContactForTranfer(
+    transferBalanceContactInput: TransferBalanceContactInput,
+  ) {
+    const { accountIdTo } = transferBalanceContactInput;
     const storedCheckingAccount = await this.checkingAccountModel.findOne({
-      id,
+      id: accountIdTo,
     });
     if (!storedCheckingAccount) throw new Error('Checking account not found');
-    storedCheckingAccount.balance += transferBalanceInput.amount;
+    storedCheckingAccount.balance += transferBalanceContactInput.amount;
+    storedCheckingAccount.save();
+    return storedCheckingAccount;
+  }
+
+  async findOneForDeposit(depositBalanceInput: DepositBalanceInput) {
+    const { accountIdTo, amount } = depositBalanceInput;
+    const storedCheckingAccount = await this.checkingAccountModel.findOne({
+      id: accountIdTo,
+    });
+    if (!storedCheckingAccount) throw new Error('Checking account not found');
+    storedCheckingAccount.balance += amount;
     storedCheckingAccount.save();
     return storedCheckingAccount;
   }
