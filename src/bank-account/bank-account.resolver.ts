@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UserBankSetting } from '../user-bank-settings/schema/user-bank-setting.schema';
@@ -23,7 +23,8 @@ export class BankAccountResolver {
     );
   }
 
-  @Query(() => Boolean)
+  @Mutation(() => Boolean)
+  @UseGuards(JwtAuthGuard)
   transferBalance(
     @CurrentUser() userBankSetting: UserBankSetting,
     @Args('transferBalanceInput') transferBalanceInput: TransferBalanceInput,

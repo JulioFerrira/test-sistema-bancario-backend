@@ -3,8 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { uuid } from 'uuidv4';
 import { TransferBalanceInput } from '../bank-account/dto/transfer-balance-input';
+import { UpdateBankAccountInput } from '../bank-account/dto/update-bank-account.input';
 import { generateBankAccountNumber } from '../utils/generateBankNumer';
-import { CreateCheckingAccountDto } from './dto/create-checking-account.dto';
+import { CreateCheckingAccountInput } from './dto/create-checking-account.input';
 import { CheckingAccount } from './schema/checking-account.schema';
 
 @Injectable()
@@ -15,11 +16,11 @@ export class CheckingAccountService {
   ) {}
 
   async create(
-    createCheckingAccountDto: CreateCheckingAccountDto,
+    CreateCheckingAccountInput: CreateCheckingAccountInput,
   ): Promise<CheckingAccount> {
     const bankAccountNumber = generateBankAccountNumber();
     const checkingAccount = await this.checkingAccountModel.create({
-      ...createCheckingAccountDto,
+      ...CreateCheckingAccountInput,
       id: uuid(),
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -36,9 +37,38 @@ export class CheckingAccountService {
     return storedCheckingAccount;
   }
 
+  async updateAccount(updateCheckingAccountInput: UpdateBankAccountInput) {
+    const { id } = updateCheckingAccountInput;
+    return await this.checkingAccountModel.findOneAndUpdate(
+      {
+        id,
+      },
+      updateCheckingAccountInput,
+      { new: true },
+    );
+  }
+
   async findOneForTranfer(transferBalanceInput: TransferBalanceInput) {
+    console.log({ emailTo: transferBalanceInput.emailTo });
     const storedCheckingAccount = await this.checkingAccountModel.findOne({
       accountNumber: transferBalanceInput.accountNumberTo,
+      bankName: transferBalanceInput.bankNameTo,
+      typeAccount: transferBalanceInput.accountTypeTo,
     });
+    if (!storedCheckingAccount) throw new Error('Checking account not found');
+    storedCheckingAccount.balance += transferBalanceInput.amount;
+    storedCheckingAccount.save();
+    return storedCheckingAccount;
+  }
+
+  async findOneContactForTranfer(transferBalanceInput: TransferBalanceInput) {
+    const id = '';
+    const storedCheckingAccount = await this.checkingAccountModel.findOne({
+      id,
+    });
+    if (!storedCheckingAccount) throw new Error('Checking account not found');
+    storedCheckingAccount.balance += transferBalanceInput.amount;
+    storedCheckingAccount.save();
+    return storedCheckingAccount;
   }
 }

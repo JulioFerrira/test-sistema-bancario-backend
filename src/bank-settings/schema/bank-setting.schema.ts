@@ -11,10 +11,6 @@ export class BankSetting extends Base {
   @Prop()
   transferencePassword: string;
 
-  @Field(() => String)
-  @Prop()
-  bankName: string;
-
   @Field(() => [UserBankSetting])
   @Prop()
   contacts: string[];

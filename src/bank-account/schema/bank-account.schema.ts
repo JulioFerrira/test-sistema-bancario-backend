@@ -39,6 +39,10 @@ export abstract class BankAccount extends Base implements IBankAccount {
   @Prop()
   accountNumber: string;
 
+  @Field(() => String)
+  @Prop()
+  bankName: string;
+
   @Field(() => EBankAccoutType)
   @Prop({ default: EBankAccoutType.UNKNOWN })
   typeAccount: EBankAccoutType;

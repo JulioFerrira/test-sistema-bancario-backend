@@ -8,6 +8,7 @@ interface BankAccount {
   createdAt: DateTime
   balance: Int!
   accountNumber: String!
+  bankName: String!
   typeAccount: EBankAccoutType!
 }
 
@@ -29,6 +30,7 @@ type BankAccountObject implements Base {
   createdAt: DateTime
   balance: Int!
   accountNumber: String!
+  bankName: String!
   typeAccount: EBankAccoutType!
 }
 
@@ -44,6 +46,7 @@ type CheckingAccount implements BankAccount & Base {
   createdAt: DateTime
   balance: Int!
   accountNumber: String!
+  bankName: String!
   typeAccount: EBankAccoutType!
   transferenceCost: Int
 }
@@ -54,6 +57,7 @@ type SavingsAccount implements BankAccount & Base {
   createdAt: DateTime
   balance: Int!
   accountNumber: String!
+  bankName: String!
   typeAccount: EBankAccoutType!
   interestRate: Float!
 }
@@ -83,7 +87,6 @@ type BankSetting implements Base {
   updatedAt: DateTime
   createdAt: DateTime
   transferencePassword: String!
-  bankName: String!
   contacts: [UserBankSetting!]!
 }
 
@@ -94,6 +97,7 @@ type AuthResponse {
 input BankAccountType {
   balance: Int!
   accountNumber: String!
+  bankName: String!
   typeAccount: EBankAccoutType!
 }
 
@@ -113,7 +117,6 @@ input UserBankSettingType {
 
 input BankSettingType {
   transferencePassword: String!
-  bankName: String!
   contacts: [UserBankSettingType!]!
 }
 
@@ -124,7 +127,6 @@ type Query {
   userBankSetting: UserBankSetting!
   findOneBankSettings(id: String!): BankSetting!
   findOneBankAccount(getBankAccountGetterInput: GetBankAccountInput!): BankAccount!
-  transferBalance(transferBalanceInput: TransferBalanceInput!): Boolean!
 }
 
 input GetBankAccountInput {
@@ -132,18 +134,12 @@ input GetBankAccountInput {
   accountType: EBankAccoutType!
 }
 
-input TransferBalanceInput {
-  accountTypeTo: EBankAccoutType!
-  accountNumberTo: String!
-  emailTo: EBankAccoutType!
-  amount: Int!
-}
-
 type Mutation {
   updateUser(updateUserInput: UpdateUserInput!): User!
   login(loginInput: LoginInput!): AuthResponse!
   createUserBankSettings(createUserBankSettingDto: CreateUserBankSettingInputType!): UserBankSetting!
   updateBankSetting(updateBankSettingInput: UpdateBankSettingInput!): BankSetting!
+  transferBalance(transferBalanceInput: TransferBalanceInput!): Boolean!
 }
 
 input UpdateUserInput {
@@ -172,20 +168,27 @@ input CreateUserInputType {
 
 input CreateBankSettingInputType {
   transferencePassword: String!
-  bankName: String!
   contact: [String!]
 }
 
 input CreateBankAccountsFactoryInputType {
   balance: Float!
   accountType: EBankAccoutType!
+  bankName: String!
   interestRate: Float
-  moneyOutcomes: Float
+  transferenceCost: Float
 }
 
 input UpdateBankSettingInput {
   transferencePassword: String
-  bankName: String
   contact: [String!]
   id: String!
+}
+
+input TransferBalanceInput {
+  accountTypeTo: EBankAccoutType!
+  accountNumberTo: String!
+  bankNameTo: String!
+  emailTo: String!
+  amount: Int!
 }

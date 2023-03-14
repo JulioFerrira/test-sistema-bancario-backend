@@ -9,7 +9,10 @@ export class TransferBalanceInput {
   @Field(() => String)
   accountNumberTo: string;
 
-  @Field(() => EBankAccoutType)
+  @Field(() => String)
+  bankNameTo: string;
+
+  @Field(() => String)
   emailTo: string;
 
   @Field(() => Int)
