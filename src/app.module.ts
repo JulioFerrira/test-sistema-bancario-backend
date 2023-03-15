@@ -5,7 +5,6 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { join } from 'path';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { BankAccountModule } from './bank-account/bank-account.module';
@@ -37,7 +36,6 @@ import { UserModule } from './user/user.module';
     BankAccountsFactoryModule,
     BankAccountModule,
   ],
-  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

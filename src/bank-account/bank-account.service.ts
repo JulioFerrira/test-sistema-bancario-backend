@@ -158,7 +158,7 @@ export class BankAccountService {
     }
   }
 
-  private async updateBankAccount(
+  async updateBankAccount(
     updateBankAccountInput: UpdateBankAccountInput,
   ): Promise<BankAccount> {
     const { accountType } = updateBankAccountInput;
