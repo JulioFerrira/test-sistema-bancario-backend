@@ -15,7 +15,6 @@ describe('Test BankAccountService', () => {
   let bankAccountService: BankAccountService;
   let checkingAccountService: CheckingAccountService;
   let savingsAccountService: SavingsAccountService;
-  let bankSettingsService: BankSettingsService;
   const userBankMock: UserBankSetting = {
     bankAccount: '123',
     bankAccountType: 'CHECKING' as any,
@@ -63,11 +62,11 @@ describe('Test BankAccountService', () => {
         accountTypeTo: 'CHECKING' as any,
         transferencePassword: '123',
       };
-      const account = { ...bankAccount, balance: 0 }; // Create a fresh account with balance = 0
+      const account = { ...bankAccount, balance: 0 };
       jest
         .spyOn(bankAccountService, 'findOneBankAccount')
-        .mockResolvedValueOnce(account); // Mock the findOneBankAccount method to return the fresh account
-      const spy = jest.spyOn(bankAccountService, 'updateBankAccount'); // Spy on the updateBankAccount method
+        .mockResolvedValueOnce(account);
+      const spy = jest.spyOn(bankAccountService, 'updateBankAccount');
       const result = await bankAccountService.depositBalance(
         depositMock,
         userBankMock,
@@ -77,10 +76,9 @@ describe('Test BankAccountService', () => {
         accountType: depositMock.accountTypeTo,
         id: depositMock.accountIdTo,
         balance: depositMock.amount,
-      }); // Check that the updateBankAccount method was called with the correct arguments
+      });
       expect(result).toBe(true);
 
-      // Verify that the balance was updated correctly
       const updatedAccount = await bankAccountService.findOneBankAccount({
         accountType: depositMock.accountTypeTo,
         id: depositMock.accountIdTo,
