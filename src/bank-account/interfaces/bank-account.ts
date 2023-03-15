@@ -1,4 +1,4 @@
-import { EBankAccoutType } from 'src/bank-accounts-factory/types/accounts-type-enum';
+import { EBankAccoutType } from '../../bank-accounts-factory/types/accounts-type-enum';
 
 export interface IBankAccount {
   balance: number;

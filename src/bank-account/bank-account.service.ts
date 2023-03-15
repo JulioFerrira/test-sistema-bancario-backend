@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserInputError } from 'apollo-server-core';
 import * as bcrypt from 'bcrypt';
-import { EBankAccoutType } from 'src/bank-accounts-factory/types/accounts-type-enum';
+import { EBankAccoutType } from '../bank-accounts-factory/types/accounts-type-enum';
 import { BankSettingsService } from '../bank-settings/bank-settings.service';
 import { CheckingAccountService } from '../checking-account/checking-account.service';
 import { SavingsAccountService } from '../savings-account/savings-account.service';

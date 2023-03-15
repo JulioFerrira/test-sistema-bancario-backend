@@ -1,6 +1,6 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Base } from 'src/shared/schema/base';
+import { Base } from '../../shared/schema/base';
 
 @ObjectType({ implements: [Base] })
 @InputType('UserType')
